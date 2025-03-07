@@ -1,33 +1,58 @@
-def calculadora():
+import tkinter as tk
+from tkinter import messagebox
+
+def calcular():
     try:
-        num1 = float(input("Digite o primeiro número: "))
-        num2 = float(input("Digite o segundo número: "))
+        num1 = float(entrada_num1.get())
+        num2 = float(entrada_num2.get())
+        operacao = operacao_var.get()
 
-        print("\nEscolha a operação:")
-        print("1 - Adição (+)")
-        print("2 - Subtração (-)")
-        print("3 - Multiplicação (*)")
-        print("4 - Divisão (/)")
-
-        op = input("Digite o número da operação desejada: ")
-
-        if op == "1":
-            print(f"\nResultado: {num1} + {num2} = {num1 + num2}")
-        elif op == "2":
-            print(f"\nResultado: {num1} - {num2} = {num1 - num2}")
-        elif op == "3":
-            print(f"\nResultado: {num1} * {num2} = {num1 * num2}")
-        elif op == "4":
+        if operacao == "+":
+            resultado = num1 + num2
+        elif operacao == "-":
+            resultado = num1 - num2
+        elif operacao == "*":
+            resultado = num1 * num2
+        elif operacao == "/":
             if num2 == 0:
-                print("\nErro: divisão por zero não é permitida!")
-            else:
-                print(f"\nResultado: {num1} / {num2} = {num1 / num2}")
+                messagebox.showerror("Erro", "Divisão por zero não é permitida!")
+                return
+            resultado = num1 / num2
         else:
-            print("\nOpção inválida! Escolha uma operação válida.")
-
+            messagebox.showerror("Erro", "Selecione uma operação válida")
+            return
+        
+        label_resultado.config(text=f"Resultado: {resultado}")
     except ValueError:
-        print("\nErro: Digite apenas números!")
+        messagebox.showerror("Erro", "Digite valores numéricos válidos!")
 
-# Executar a calculadora
-calculadora()
+# Criando a janela
+janela = tk.Tk()
+janela.title("Calculadora Simples")
+janela.geometry("300x300")
+
+# Campos de entrada
+entrada_num1 = tk.Entry(janela)
+entrada_num1.pack(pady=5)
+
+entrada_num2 = tk.Entry(janela)
+entrada_num2.pack(pady=5)
+
+# Opções de operação
+operacao_var = tk.StringVar(value="+")
+operacoes = ["+", "-", "*", "/"]
+for op in operacoes:
+    tk.Radiobutton(janela, text=op, variable=operacao_var, value=op).pack()
+
+# Botão de calcular
+botao_calcular = tk.Button(janela, text="Calcular", command=calcular)
+botao_calcular.pack(pady=10)
+
+# Exibir resultado
+label_resultado = tk.Label(janela, text="Resultado: ")
+label_resultado.pack(pady=10)
+
+# Rodar a interface
+tk.mainloop()
+
 
